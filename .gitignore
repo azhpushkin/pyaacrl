@@ -140,3 +140,7 @@ cython_debug/
 # IDEs settings
 .vscode/
 .idea/
+
+# Compiled Cython files
+yaacrl/*.cpp
+yaacrl/*.cc
