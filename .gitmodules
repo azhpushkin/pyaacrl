@@ -1,0 +1,3 @@
+[submodule "vendor/yaacrl"]
+	path = vendor/yaacrl
+	url = https://github.com/azhpushkin/yaacrl
