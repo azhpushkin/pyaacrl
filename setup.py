@@ -7,7 +7,7 @@ compile_args = ['-g', '-std=c++17']
 # TEMP directives, for testing
 import pathlib
 repo_root = pathlib.Path(__file__).absolute().parent
-yaacrl_src_dir = str(repo_root/'vendor'/'yaacrl/src')
+pyaacrl_src_dir = str(repo_root/'vendor'/'pyaacrl/src')
 
 
 vendor_c_files=[
@@ -18,24 +18,24 @@ vendor_c_files=[
     'fingerprint.cpp',
 ]
 sources = [
-    *[yaacrl_src_dir+'/'+file for file in vendor_c_files],
-    'yaacrl/yaacrl.pyx'
+    *[pyaacrl_src_dir+'/'+file for file in vendor_c_files],
+    'pyaacrl/yaacrl.pyx'
 ]
 
 basics_module = Extension(
-    'yaacrl',
+    'pyaacrl',
     sources=sources,
     extra_compile_args=compile_args,
     libraries=["hiredis"],
     language='c++',
-    include_dirs=[yaacrl_src_dir]
+    include_dirs=[pyaacrl_src_dir]
 )
 
 
 
 
 setup(
-    name='yaacrl',
-    packages=['yaacrl'],
+    name='pyaacrl',
+    packages=['pyaacrl'],
     ext_modules=cythonize(basics_module, compiler_directives={'language_level' : "3"})
 )
