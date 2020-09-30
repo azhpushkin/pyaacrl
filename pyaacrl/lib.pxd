@@ -1,10 +1,13 @@
-from libcpp.string cimport string
-# from libcpp.vector cimport vector
+# cython: c_string_type=unicode, c_string_encoding=utf8
 
-cdef extern from "lib.hpp":
+from libcpp.string cimport string
+
+cdef extern from "lib.h":
     cdef cppclass CppFingerprint "Fingerprint":
         string name
 
-        static Fingerprint fromWAV(string path);
-        static Fingerprint fromWAV(string path, string name);
-        
+        @staticmethod
+        CppFingerprint fromWAV(string path)
+
+        @staticmethod
+        CppFingerprint fromWAV(string path, string name)
