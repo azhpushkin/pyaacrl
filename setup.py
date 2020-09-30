@@ -7,7 +7,7 @@ compile_args = ['-g', '-std=c++17']
 # TEMP directives, for testing
 import pathlib
 repo_root = pathlib.Path(__file__).absolute().parent
-pyaacrl_src_dir = str(repo_root/'vendor'/'pyaacrl/src')
+pyaacrl_src_dir = str(repo_root/'vendor'/'yaacrl/src')
 
 
 vendor_c_files=[
@@ -19,7 +19,7 @@ vendor_c_files=[
 ]
 sources = [
     *[pyaacrl_src_dir+'/'+file for file in vendor_c_files],
-    'pyaacrl/yaacrl.pyx'
+    'pyaacrl/pyaacrl.pyx'
 ]
 
 basics_module = Extension(

@@ -1,3 +1,5 @@
+# cython: c_string_type=unicode, c_string_encoding=utf8
+
 from cython.operator cimport dereference as deref
 from libcpp.string cimport string
 from libcpp.memory cimport unique_ptr, make_unique

@@ -144,3 +144,4 @@ cython_debug/
 # Compiled Cython files
 pyaacrl/*.cpp
 pyaacrl/*.cc
+pyaacrl/*.c
