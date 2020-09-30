@@ -11,3 +11,5 @@ print('### FINGERPRINTING: ', first_wav_song)
 
 f = pyaacrl.Fingerprint(songs_dir + first_wav_song, first_wav_song)
 print(f)
+
+f.print_peaks()
