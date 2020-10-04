@@ -22,8 +22,12 @@ cdef class Fingerprint:
     cdef unique_ptr[CppFingerprint] thisptr
     cdef public string path
 
-    def __init__(self, path: str, name: str):
-        self.thisptr = make_unique[CppFingerprint](CppFingerprint.fromWAV(path, name))
+    def __init__(self, path: str, name: str = None):
+        if name:
+            self.thisptr = make_unique[CppFingerprint](CppFingerprint.fromWAVfull(path, name))
+        else:
+            self.thisptr = make_unique[CppFingerprint](CppFingerprint.fromWAV(path))
+
         self.path = deref(self.thisptr).name
 
     def yield_peaks(self):
@@ -49,7 +53,7 @@ cdef class Storage:
     cdef unique_ptr[CppStorage] thisptr
 
     def __init__(self):
-        self.thisptr = make_unique[CppStorage](CppStorage())
+        self.thisptr.reset(new CppStorage())
 
     def store_fingerprint(self, fp: Fingerprint):
         deref(self.thisptr).store_fingerprint(deref(fp.thisptr))
@@ -62,10 +66,9 @@ cdef class Storage:
         py_matches = {}
         while(it != matches.end()):
             py_matches[deref(it).first] = deref(it).second
+            inc(it)
         
         return py_matches
-
-
 
         
 

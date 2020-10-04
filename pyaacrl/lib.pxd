@@ -27,7 +27,7 @@ cdef extern from "lib.h":
         CppFingerprint fromWAV(string path)
 
         @staticmethod
-        CppFingerprint fromWAV(string path, string name)
+        CppFingerprint fromWAVfull "fromWAV" (string path, string name)
     
     cdef cppclass CppStorage "Storage":
         CppStorage() except +
