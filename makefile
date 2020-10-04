@@ -1,4 +1,5 @@
 all:
+	redis-cli flushall
 	python setup.py build_ext --inplace
 	cp pyaacrl*.so ./build
 	cp main.py ./build

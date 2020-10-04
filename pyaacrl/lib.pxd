@@ -3,6 +3,7 @@
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 from libcpp.utility cimport pair
+from libcpp.map cimport map
 
 cdef extern from "fingerprint.h":
     cdef int HASH_SIZE "HASH_SIZE"
@@ -27,3 +28,9 @@ cdef extern from "lib.h":
 
         @staticmethod
         CppFingerprint fromWAV(string path, string name)
+    
+    cdef cppclass CppStorage "Storage":
+        CppStorage() except +
+
+        void store_fingerprint(CppFingerprint f)
+        map[string, float] get_matches(CppFingerprint f)
