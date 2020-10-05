@@ -36,5 +36,9 @@ basics_module = Extension(
 setup(
     name='pyaacrl',
     packages=['pyaacrl'],
-    ext_modules=cythonize(basics_module, compiler_directives={'language_level' : "3"})
+    ext_modules=cythonize(
+        basics_module,
+        force=True,
+        compiler_directives={'language_level' : "3"}
+    )
 )

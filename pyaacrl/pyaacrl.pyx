@@ -8,6 +8,7 @@ from libcpp.memory cimport unique_ptr, make_unique
 from libcpp.map cimport map
 
 from lib cimport (
+    CppWAVFile,
     CppFingerprint,
     CppStorage,
     CppPeak,
@@ -23,10 +24,12 @@ cdef class Fingerprint:
     cdef public string path
 
     def __init__(self, path: str, name: str = None):
+        # unique_ptr passes params to constructor
+        # Funny that stack allocation of C++ is not allowed, but it works here
         if name:
-            self.thisptr = make_unique[CppFingerprint](CppFingerprint.fromWAVfull(path, name))
+            self.thisptr = make_unique[CppFingerprint](CppWAVFile(path, name))
         else:
-            self.thisptr = make_unique[CppFingerprint](CppFingerprint.fromWAV(path))
+            self.thisptr = make_unique[CppFingerprint](CppWAVFile(path))
 
         self.path = deref(self.thisptr).name
 

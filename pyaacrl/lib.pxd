@@ -16,20 +16,20 @@ cdef extern from "<array>" namespace "std" nogil:
 ctypedef pair[int, int] CppPeak
 ctypedef pair[HashArray, int] CppHash
 
-cdef extern from "lib.h":    
+cdef extern from "lib.h" namespace "yaacrl":
+    cdef cppclass CppWAVFile "yaacrl::WAVFile":
+        CppWAVFile (string path)
+        CppWAVFile (string path, string name)
+    
 
-    cdef cppclass CppFingerprint "Fingerprint":
+    cdef cppclass CppFingerprint "yaacrl::Fingerprint":
+        CppFingerprint(CppWAVFile file)
         string name
         vector[CppPeak] peaks
         vector[CppHash] hashes
 
-        @staticmethod
-        CppFingerprint fromWAV(string path)
-
-        @staticmethod
-        CppFingerprint fromWAVfull "fromWAV" (string path, string name)
     
-    cdef cppclass CppStorage "Storage":
+    cdef cppclass CppStorage "yaacrl::Storage":
         CppStorage() except +
 
         void store_fingerprint(CppFingerprint f)

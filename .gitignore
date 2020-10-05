@@ -145,3 +145,5 @@ cython_debug/
 pyaacrl/*.cpp
 pyaacrl/*.cc
 pyaacrl/*.c
+# annotation of cython files
+pyaacrl/*.html  
