@@ -147,3 +147,6 @@ pyaacrl/*.cc
 pyaacrl/*.c
 # annotation of cython files
 pyaacrl/*.html  
+
+# Local Netlify folder
+.netlify

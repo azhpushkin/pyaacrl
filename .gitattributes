@@ -1,0 +1,2 @@
+songs/*.wav filter=lfs diff=lfs merge=lfs -text
+songs/test_samples/*.wav filter=lfs diff=lfs merge=lfs -text
