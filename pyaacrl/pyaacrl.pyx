@@ -17,8 +17,6 @@ from lib cimport (
     HASH_SIZE
 )
 
-
-
 cdef class Fingerprint:
     cdef unique_ptr[CppFingerprint] thisptr
     cdef public string path
@@ -34,7 +32,7 @@ cdef class Fingerprint:
         self.path = deref(self.thisptr).name
 
     def yield_peaks(self):
-        cdef vector[CppPeak] v = deref(self.thisptr).peaks
+        cdef vector[CppPeak] peaks = deref(self.thisptr).peaks
         cdef vector[CppPeak].iterator it = v.begin()
 
         while it != v.end():
@@ -42,14 +40,12 @@ cdef class Fingerprint:
             inc(it)
 
     def yield_hashes(self):
-        cdef vector[CppHash] v = deref(self.thisptr).hashes
-        cdef vector[CppHash].iterator it = v.begin()
+        cdef vector[CppHash] hashes = deref(self.thisptr).hashes
+        cdef CppHash hash
 
         cdef HashArray x
-        while it != v.end():
-            x = (deref(it)).first
-            yield (<bytes>(x.data()[:HASH_SIZE]))  # make sure length is not overwhelmed
-            inc(it)
+        for hash in hashes:
+            yield (<bytes>(hash.first.data()[:HASH_SIZE]))
             
 
 cdef class Storage:
@@ -72,8 +68,5 @@ cdef class Storage:
             inc(it)
         
         return py_matches
-
-        
-
 
         
