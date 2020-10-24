@@ -1,4 +1,5 @@
 # cython: c_string_type=unicode, c_string_encoding=utf8
+# cython: language_level=3
 
 from cython.operator cimport dereference as deref, preincrement as inc
 from libcpp.string cimport string
@@ -33,11 +34,11 @@ cdef class Fingerprint:
 
     def yield_peaks(self):
         cdef vector[CppPeak] peaks = deref(self.thisptr).peaks
-        cdef vector[CppPeak].iterator it = v.begin()
 
-        while it != v.end():
-            yield (deref(it).first, deref(it).second)
-            inc(it)
+        cdef CppPeak peak
+        for peak in peaks:
+            yield (peak.first, peak.second)
+
 
     def yield_hashes(self):
         cdef vector[CppHash] hashes = deref(self.thisptr).hashes

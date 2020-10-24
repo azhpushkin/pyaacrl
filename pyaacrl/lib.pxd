@@ -1,4 +1,5 @@
 # cython: c_string_type=unicode, c_string_encoding=utf8
+# cython: language_level=3
 
 from libcpp.string cimport string
 from libcpp.vector cimport vector
@@ -16,7 +17,7 @@ cdef extern from "<array>" namespace "std" nogil:
 ctypedef pair[int, int] CppPeak
 ctypedef pair[HashArray, int] CppHash
 
-cdef extern from "lib.h" namespace "yaacrl":
+cdef extern from "yaacrl.h" namespace "yaacrl":
     cdef cppclass CppWAVFile "yaacrl::WAVFile":
         CppWAVFile (string path)
         CppWAVFile (string path, string name)
