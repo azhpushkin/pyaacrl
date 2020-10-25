@@ -7,7 +7,7 @@ from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext as build_ext
 from setuptools.command.sdist import sdist
 
-CPPFLAGS = ['-O2', '-std=c++17']
+CPPFLAGS = ['-O2', '-std=c++17', '-fPIC']
 FILE_PATH = Path(__file__).parent.resolve()
 YAACRL_DIR: PurePath = FILE_PATH / 'vendor' / 'yaacrl'
 YAACRL_BUILD_DIR: PurePath = FILE_PATH / 'build' / 'yaacrl'
@@ -34,6 +34,12 @@ class pyaacrl_build_ext(build_ext):
         self.use_system_yaacrl = False
     
     def _build_yaacrl(self):
+        try:
+            import Cython
+        except ImportError:
+            raise RuntimeError('Cython is required to install pyaacrl')
+
+        # Make sure build directory is ready
         YAACRL_BUILD_DIR.mkdir(parents=True, exist_ok=True)
         
         # Reset CMake cache to avoid issues with non-constant build directory
@@ -55,7 +61,7 @@ class pyaacrl_build_ext(build_ext):
             self.compiler.add_library('yaacrl')
         else:
             self._build_yaacrl()
-            ext.extra_objects.extend([str(YAACRL_BUILD_DIR / 'libyaacrl.so')])
+            ext.extra_objects.extend([str(YAACRL_BUILD_DIR / 'libyaacrl-static.a')])
             self.compiler.add_include_dir(str(YAACRL_DIR / 'include'))
         
         super().build_extension(ext)
