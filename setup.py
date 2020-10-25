@@ -1,13 +1,12 @@
 import os
 import shutil
-import subprocess
+import subprocess as subproc
 from pathlib import Path, PurePath
 
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext as build_ext
-from setuptools.command.sdist import sdist
 
-CPPFLAGS = ['-O2', '-std=c++17', '-fPIC']
+CPPFLAGS = ['-O2', '-std=c++17', ]
 FILE_PATH = Path(__file__).parent.resolve()
 YAACRL_DIR: PurePath = FILE_PATH / 'vendor' / 'yaacrl'
 YAACRL_BUILD_DIR: PurePath = FILE_PATH / 'build' / 'yaacrl'
@@ -49,19 +48,26 @@ class pyaacrl_build_ext(build_ext):
             os.remove(YAACRL_BUILD_DIR / 'CMakeCache.txt')
 
         # For some reason, -G argument only works in this way. No idea why.
-        subprocess.run([
+        subproc.run([
             'cmake', ' -G "Unix Makefiles" ',  '-S', YAACRL_DIR, '-B', YAACRL_BUILD_DIR
         ], check=True)
 
         # Actually compile a program
-        subprocess.run(['make'], cwd=YAACRL_BUILD_DIR, check=True)
+        subproc.run(['make'], cwd=YAACRL_BUILD_DIR, check=True)
 
     def build_extension(self, ext):
         if self.use_system_yaacrl:
             self.compiler.add_library('yaacrl')
         else:
+            try:
+                subproc.check_call('ldconfig -p | grep hiredis', shell=True)
+            except subproc.CalledProcessError:
+                raise RuntimeError('hiredis library is required for pyaacrl to work')
+            
             self._build_yaacrl()
             ext.extra_objects.extend([str(YAACRL_BUILD_DIR / 'libyaacrl-static.a')])
+            
+            ext.libraries.extend(['hiredis'])
             self.compiler.add_include_dir(str(YAACRL_DIR / 'include'))
         
         super().build_extension(ext)
@@ -78,7 +84,7 @@ setup(
             'pyaacrl',
             sources=['pyaacrl/pyaacrl.pyx'],
             extra_compile_args=CPPFLAGS,
-            language='C++'
+            language='c++'
         )
     ],
     provides=['pyaacrl'],
