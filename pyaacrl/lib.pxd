@@ -6,7 +6,7 @@ from libcpp.vector cimport vector
 from libcpp.utility cimport pair
 from libcpp.map cimport map
 
-cdef extern from "fingerprint.h":
+cdef extern from "yaacrl/fingerprint.h":
     cdef int HASH_SIZE "HASH_SIZE"
 
 cdef extern from "<array>" namespace "std" nogil:
@@ -17,10 +17,17 @@ cdef extern from "<array>" namespace "std" nogil:
 ctypedef pair[int, int] CppPeak
 ctypedef pair[HashArray, int] CppHash
 
-cdef extern from "yaacrl.h" namespace "yaacrl":
+cdef extern from "yaacrl/yaacrl.h" namespace "yaacrl":
     cdef cppclass CppWAVFile "yaacrl::WAVFile":
+        string name
         CppWAVFile (string path)
         CppWAVFile (string path, string name)
+    
+
+    cdef cppclass CppMP3File "yaacrl::MP3File":
+        string name
+        CppMP3File (string path)
+        CppMP3File (string path, string name)
     
 
     cdef cppclass CppFingerprint "yaacrl::Fingerprint":
@@ -31,7 +38,7 @@ cdef extern from "yaacrl.h" namespace "yaacrl":
 
     
     cdef cppclass CppStorage "yaacrl::Storage":
-        CppStorage() except +
+        CppStorage(string) except +
 
         void store_fingerprint(CppFingerprint f)
         map[string, float] get_matches(CppFingerprint f)

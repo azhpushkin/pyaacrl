@@ -57,17 +57,12 @@ class pyaacrl_build_ext(build_ext):
 
     def build_extension(self, ext):
         if self.use_system_yaacrl:
-            self.compiler.add_library('yaacrl')
+            ext.libraries.add_library('yaacrl')
         else:
-            try:
-                subproc.check_call('ldconfig -p | grep hiredis', shell=True)
-            except subproc.CalledProcessError:
-                raise RuntimeError('hiredis library is required for pyaacrl to work')
-            
             self._build_yaacrl()
             ext.extra_objects.extend([str(YAACRL_BUILD_DIR / 'libyaacrl-static.a')])
             
-            ext.libraries.extend(['hiredis'])
+            # ext.libraries.extend(['dl', 'pthread'])
             self.compiler.add_include_dir(str(YAACRL_DIR / 'include'))
         
         super().build_extension(ext)
@@ -87,7 +82,6 @@ setup(
             language='c++'
         )
     ],
-    provides=['pyaacrl'],
     include_package_data=True
 )
 

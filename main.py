@@ -1,7 +1,6 @@
 import os
 import pyaacrl
 
-print(dir(pyaacrl))
 
 # TODO: other test stand is probably worth implementing
 songs_dir = "/home/maqquettex/projects/yaacrl/songs/"
@@ -18,16 +17,16 @@ for s in os.listdir(songs_dir):
     else:
         songs_to_upload.append(songs_dir+s)
 
-storage = pyaacrl.Storage()
+storage = pyaacrl.Storage("file.sqlite")
 
 for s in songs_to_upload:
     print('### FINGERPRINTING: ', s)
-    f = pyaacrl.Fingerprint(s)
+    f = pyaacrl.Fingerprint.from_wav(s)
     storage.store_fingerprint(f)
 
 
 for s in songs_to_test:
     print('Mathces for ', s)
-    f = pyaacrl.Fingerprint(s)
+    f = pyaacrl.Fingerprint.from_wav(s)
     matches = storage.get_matches(f)
     print('\t *', matches)

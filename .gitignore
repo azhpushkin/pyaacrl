@@ -150,3 +150,6 @@ pyaacrl/*.html
 
 # Local Netlify folder
 .netlify
+
+# Local test databases
+*.sqlite

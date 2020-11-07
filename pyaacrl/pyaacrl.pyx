@@ -1,15 +1,15 @@
 # cython: c_string_type=unicode, c_string_encoding=utf8
 # cython: language_level=3
 
-from cython.operator cimport dereference as deref, preincrement as inc
+from cython.operator cimport dereference as deref
 from libcpp.string cimport string
 from libcpp.vector cimport vector
-from libcpp.utility cimport pair
 from libcpp.memory cimport unique_ptr, make_unique
 from libcpp.map cimport map
 
 from lib cimport (
     CppWAVFile,
+    CppMP3File,
     CppFingerprint,
     CppStorage,
     CppPeak,
@@ -18,19 +18,30 @@ from lib cimport (
     HASH_SIZE
 )
 
+
 cdef class Fingerprint:
     cdef unique_ptr[CppFingerprint] thisptr
-    cdef public string path
-
-    def __init__(self, path: str, name: str = None):
-        # unique_ptr passes params to constructor
-        # Funny that stack allocation of C++ is not allowed, but it works here
+    
+    @staticmethod
+    def from_wav(path, name = None):
+        self = Fingerprint()
         if name:
             self.thisptr = make_unique[CppFingerprint](CppWAVFile(path, name))
         else:
             self.thisptr = make_unique[CppFingerprint](CppWAVFile(path))
+        
+        return self
 
-        self.path = deref(self.thisptr).name
+    @staticmethod
+    def from_mp3(path, name = None):
+        self = Fingerprint()
+        if name:
+            self.thisptr = make_unique[CppFingerprint](CppMP3File(path, name))
+        else:
+            self.thisptr = make_unique[CppFingerprint](CppMP3File(path))
+        
+        return self
+    
 
     def yield_peaks(self):
         cdef vector[CppPeak] peaks = deref(self.thisptr).peaks
@@ -52,8 +63,8 @@ cdef class Fingerprint:
 cdef class Storage:
     cdef unique_ptr[CppStorage] thisptr
 
-    def __init__(self):
-        self.thisptr.reset(new CppStorage())
+    def __cinit__(self, dbfile: str):
+        self.thisptr.reset(new CppStorage(dbfile))
 
     def store_fingerprint(self, fp: Fingerprint):
         deref(self.thisptr).store_fingerprint(deref(fp.thisptr))
@@ -62,12 +73,4 @@ cdef class Storage:
         cdef map[string, float] matches
         matches = deref(self.thisptr).get_matches(deref(fp.thisptr))
 
-        cdef map[string,float].iterator it = matches.begin()
-        py_matches = {}
-        while(it != matches.end()):
-            py_matches[deref(it).first] = deref(it).second
-            inc(it)
-        
-        return py_matches
-
-        
+        return matches
