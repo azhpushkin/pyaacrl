@@ -1,9 +1,9 @@
 import os
-import shutil
 import subprocess as subproc
 from pathlib import Path, PurePath
 
-from setuptools import setup, Extension
+from skbuild import setup
+
 from setuptools.command.build_ext import build_ext as build_ext
 
 CPPFLAGS = ['-O2', '-std=c++17', ]
@@ -67,22 +67,27 @@ class pyaacrl_build_ext(build_ext):
         
         super().build_extension(ext)
 
+class pyaacrl_build_ext2(build_ext):
+    def build_extension(self, ext):
+        if self.use_system_yaacrl:
+            ext.libraries.add_library('yaacrl')
+        else:
+            self._build_yaacrl()
+            ext.extra_objects.extend([str(YAACRL_BUILD_DIR / 'libyaacrl-static.a')])
+            
+            # ext.libraries.extend(['dl', 'pthread'])
+            self.compiler.add_include_dir(str(YAACRL_DIR / 'include'))
+        
+        super().build_extension(ext)
+
+from setuptools import find_packages
+
 
 setup(
     name='pyaacrl',
-    packages=['pyaacrl'],
-    cmdclass={
-        'build_ext': pyaacrl_build_ext
-    },
-    ext_modules=[
-        Extension(
-            'pyaacrl',
-            sources=['pyaacrl/pyaacrl.pyx'],
-            extra_compile_args=CPPFLAGS,
-            language='c++'
-        )
-    ],
-    include_package_data=True
+    packages=find_packages('pyaacrl'),
+    include_package_data=True,
+    package_dir = {'': 'pyaacrl'},
 )
 
 

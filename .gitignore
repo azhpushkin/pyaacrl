@@ -153,3 +153,7 @@ pyaacrl/*.html
 
 # Local test databases
 *.sqlite
+
+# SKBuild dir
+_skbuild/
+_cmake_test_compile/
