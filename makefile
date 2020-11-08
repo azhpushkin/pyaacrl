@@ -8,3 +8,4 @@ clean:
 	rm pyaacrl/*.egg-info -rf
 	rm *.egg-info -rf
 	rm _skbuild -rf
+	rm *.sqlite
