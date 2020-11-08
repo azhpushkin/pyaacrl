@@ -1,5 +1,5 @@
 import os
-from pyaacrl import pyaacrl_cy as pyaacrl
+import pyaacrl
 
 
 # TODO: other test stand is probably worth implementing

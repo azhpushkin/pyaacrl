@@ -8,4 +8,4 @@ add_subdirectory(vendor/yaacrl EXCLUDE_FROM_ALL)
 set(YAACRL_LIB_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/vendor/yaacrl/include)
 
 
-add_subdirectory(pyaacrl)
+add_subdirectory(pyaacrl/cython_src)

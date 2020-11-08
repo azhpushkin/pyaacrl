@@ -8,6 +8,3 @@ clean:
 	rm pyaacrl/*.egg-info -rf
 	rm *.egg-info -rf
 	rm _skbuild -rf
-	deativate
-	rm venv -rf
-	virtualenv venv
