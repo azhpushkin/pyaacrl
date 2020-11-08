@@ -3,19 +3,25 @@
 
 from libcpp.string cimport string
 from libcpp.vector cimport vector
-from libcpp.utility cimport pair
 from libcpp.map cimport map
+
+
+# HashData is simply a container to hold hash of certain size (HASH_SIZE)
+cdef extern from "<array>" namespace "std" nogil:
+    cdef cppclass HashData "std::array<char, HASH_SIZE>":
+        const char* data();
 
 cdef extern from "yaacrl/fingerprint.h":
     cdef int HASH_SIZE "HASH_SIZE"
 
-cdef extern from "<array>" namespace "std" nogil:
-    cdef cppclass HashArray "std::array<char, HASH_SIZE>":
-        const char* data();
+    cdef cppclass CppPeak "Peak":
+        int window
+        int bin
 
+    cdef cppclass CppHash "Hash":
+        HashData hash
+        int offset
 
-ctypedef pair[int, int] CppPeak
-ctypedef pair[HashArray, int] CppHash
 
 cdef extern from "yaacrl/yaacrl.h" namespace "yaacrl":
     cdef cppclass CppWAVFile "yaacrl::WAVFile":

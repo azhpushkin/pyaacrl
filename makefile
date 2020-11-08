@@ -1,8 +1,8 @@
 all:
 	python setup.py build_ext --inplace
-	cp pyaacrl*.so ./build
-	cp main.py ./build
-	python build/main.py
+	mv pyaacrl/pyaacrl*.so ./_skbuild
+	cp main.py ./_skbuild
+	python _skbuild/main.py
 
 clean:
 	rm pyaacrl/*.egg-info -rf

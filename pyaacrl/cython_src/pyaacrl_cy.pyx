@@ -14,7 +14,6 @@ from lib cimport (
     CppStorage,
     CppPeak,
     CppHash,
-    HashArray,
     HASH_SIZE
 )
 
@@ -48,16 +47,15 @@ cdef class Fingerprint:
 
         cdef CppPeak peak
         for peak in peaks:
-            yield (peak.first, peak.second)
+            yield (peak.window, peak.bin)
 
 
     def yield_hashes(self):
         cdef vector[CppHash] hashes = deref(self.thisptr).hashes
         cdef CppHash hash
 
-        cdef HashArray x
         for hash in hashes:
-            yield (<bytes>(hash.first.data()[:HASH_SIZE]))
+            yield (<bytes>(hash.hash.data()[:HASH_SIZE]))
             
 
 cdef class Storage:
