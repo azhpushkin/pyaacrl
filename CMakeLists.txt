@@ -13,9 +13,7 @@ if ($ENV{USE_SYSTEM_YAACRL})
 else()
     add_subdirectory(vendor/yaacrl EXCLUDE_FROM_ALL)
     add_library(yaacrl_dependency ALIAS yaacrl-static)
-    set(YAACRL_LIB_HEADERS
-        ${CMAKE_CURRENT_SOURCE_DIR}/vendor/yaacrl/include
-        )
+    set(YAACRL_LIB_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/vendor/yaacrl/include)
 
 endif()    
 

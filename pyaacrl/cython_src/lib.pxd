@@ -4,22 +4,16 @@
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 from libcpp.map cimport map
+from libc.stdint cimport uint8_t
 
-
-# HashData is simply a container to hold hash of certain size (HASH_SIZE)
-cdef extern from "<array>" namespace "std" nogil:
-    cdef cppclass HashData "std::array<char, HASH_SIZE>":
-        const char* data();
 
 cdef extern from "yaacrl/fingerprint.h":
-    cdef int HASH_SIZE "HASH_SIZE"
-
     cdef cppclass CppPeak "Peak":
         int window
         int bin
 
     cdef cppclass CppHash "Hash":
-        HashData hash
+        uint8_t hash_data[16]
         int offset
 
 

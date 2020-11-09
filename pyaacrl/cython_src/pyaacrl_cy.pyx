@@ -14,7 +14,6 @@ from lib cimport (
     CppStorage,
     CppPeak,
     CppHash,
-    HASH_SIZE
 )
 
 
@@ -40,7 +39,10 @@ cdef class Fingerprint:
             self.thisptr = make_unique[CppFingerprint](CppMP3File(path))
         
         return self
-    
+
+    @property
+    def name(self):
+        return deref(self.thisptr).name
 
     def yield_peaks(self):
         cdef vector[CppPeak] peaks = deref(self.thisptr).peaks
@@ -55,7 +57,7 @@ cdef class Fingerprint:
         cdef CppHash hash
 
         for hash in hashes:
-            yield (<bytes>(hash.hash.data()[:HASH_SIZE]))
+            yield (<bytes>(hash.hash_data[:16]))  # make 
             
 
 cdef class Storage:
