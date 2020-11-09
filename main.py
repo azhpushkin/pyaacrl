@@ -19,10 +19,10 @@ for s in os.listdir(songs_dir):
 
 storage = pyaacrl.Storage("file.sqlite")
 
-# for s in songs_to_upload:
-#     print('### FINGERPRINTING: ', s)
-#     f = pyaacrl.Fingerprint.from_wav(s)
-#     storage.store_fingerprint(f)
+for s in songs_to_upload:
+    print('### FINGERPRINTING: ', s)
+    f = pyaacrl.Fingerprint.from_wav(s)
+    storage.store_fingerprint(f)
 
 
 for s in songs_to_test:
@@ -30,7 +30,3 @@ for s in songs_to_test:
     f = pyaacrl.Fingerprint.from_wav(s)
     matches = storage.get_matches(f)
     print('\t *', matches)
-
-    print(f.name)
-    for x in f.yield_hashes():
-        print(x)

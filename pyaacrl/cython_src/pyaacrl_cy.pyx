@@ -7,15 +7,7 @@ from libcpp.vector cimport vector
 from libcpp.memory cimport unique_ptr, make_unique
 from libcpp.map cimport map
 
-from lib cimport (
-    CppWAVFile,
-    CppMP3File,
-    CppFingerprint,
-    CppStorage,
-    CppPeak,
-    CppHash,
-)
-
+from lib cimport *
 
 cdef class Fingerprint:
     cdef unique_ptr[CppFingerprint] thisptr
