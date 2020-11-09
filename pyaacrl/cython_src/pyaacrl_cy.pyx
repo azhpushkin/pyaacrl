@@ -1,9 +1,7 @@
 # cython: c_string_type=unicode, c_string_encoding=utf8
-# cython: language_level=3
 
 from cython.operator cimport dereference as deref
 from libcpp.string cimport string
-from libcpp.vector cimport vector
 from libcpp.memory cimport unique_ptr, make_unique
 from libcpp.map cimport map
 
@@ -36,20 +34,9 @@ cdef class Fingerprint:
     def name(self):
         return deref(self.thisptr).name
 
-    def yield_peaks(self):
-        cdef vector[CppPeak] peaks = deref(self.thisptr).peaks
-
-        cdef CppPeak peak
-        for peak in peaks:
-            yield (peak.window, peak.bin)
-
-
-    def yield_hashes(self):
-        cdef vector[CppHash] hashes = deref(self.thisptr).hashes
-        cdef CppHash hash
-
-        for hash in hashes:
-            yield (<bytes>(hash.hash_data[:16]))  # make 
+    @name.setter
+    def name(self, new_name):
+        deref(self.thisptr).name = new_name
             
 
 cdef class Storage:
@@ -62,7 +49,4 @@ cdef class Storage:
         deref(self.thisptr).store_fingerprint(deref(fp.thisptr))
 
     def get_matches(self, fp: Fingerprint):
-        cdef map[string, float] matches
-        matches = deref(self.thisptr).get_matches(deref(fp.thisptr))
-
-        return matches
+        return deref(self.thisptr).get_matches(deref(fp.thisptr))

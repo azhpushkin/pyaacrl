@@ -3,7 +3,7 @@ import pyaacrl
 
 
 # TODO: other test stand is probably worth implementing
-songs_dir = "/home/maqquettex/projects/yaacrl/songs/"
+songs_dir = "../yaacrl/songs/"
 
 songs_to_upload = []
 songs_to_test = []
