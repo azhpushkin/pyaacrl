@@ -8,6 +8,12 @@ songs_dir = "../yaacrl/songs/"
 songs_to_upload = []
 songs_to_test = []
 
+
+import sys
+import logging
+
+
+
 for s in os.listdir(songs_dir):
     if (not s.endswith('.wav')) or s.startswith('skip_'):
         continue

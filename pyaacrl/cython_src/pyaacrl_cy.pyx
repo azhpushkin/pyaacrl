@@ -1,12 +1,19 @@
 # cython: c_string_type=unicode, c_string_encoding=utf8
 # distutils: language = c++
 
+# Cython cimports
 from cython.operator cimport dereference as deref
 from libcpp.string cimport string
 from libcpp.memory cimport unique_ptr, make_unique
 from libcpp.map cimport map
 
 from lib cimport *
+
+# Usuall Python imports
+import logging
+
+logger = logging.getLogger()
+
 
 cdef class Fingerprint:
     cdef unique_ptr[CppFingerprint] thisptr
@@ -40,14 +47,11 @@ cdef class Fingerprint:
         deref(self.thisptr).name = new_name
             
 
-cdef void asd(CppLogLevel msg, string qwe):
-    print("Level: ", <int>msg, "msg: ", qwe)
 
 cdef class Storage:
     cdef unique_ptr[CppStorage] thisptr
 
     def __cinit__(self, dbfile: str):
-        set_logger(asd)
         self.thisptr.reset(new CppStorage(dbfile))
 
     def store_fingerprint(self, fp: Fingerprint):
@@ -55,3 +59,24 @@ cdef class Storage:
 
     def get_matches(self, fp: Fingerprint):
         return deref(self.thisptr).get_matches(deref(fp.thisptr))
+
+
+cdef void _custom_logger(CppLogLevel cpp_level, string log_msg):
+    if cpp_level == Cpp_DEBUG:
+        logger.debug(log_msg)
+    elif cpp_level == Cpp_INFO:
+        logger.info(log_msg)
+    elif cpp_level == Cpp_WARNING:
+        logger.warning(log_msg)
+    elif cpp_level == Cpp_ERROR:
+        logger.error(log_msg)
+
+
+set_logger(_custom_logger)
+
+# TESTING
+import sys
+logger.setLevel(logging.DEBUG)
+f = logging.StreamHandler(sys.stdout)
+f.setFormatter(logging.Formatter('[%(levelname)s] %(message)s'))
+logger.addHandler(f)

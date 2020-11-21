@@ -26,13 +26,11 @@ cdef extern from "yaacrl/yaacrl.h" namespace "yaacrl":
 
 cdef extern from "yaacrl/config.h" namespace "yaacrl":
     # wrapping `enum class`
-    cdef cppclass CppLogLevel "yaacrl::LogLevel":
-        pass
-
-    cdef CppLogLevel Cpp_DEBUG
-    cdef CppLogLevel Cpp_INFO
-    cdef CppLogLevel Cpp_WARNING
-    cdef CppLogLevel Cpp_ERROR
+    cdef enum CppLogLevel "yaacrl::LogLevel":
+        Cpp_DEBUG "yaacrl::LogLevel::DEBUG"
+        Cpp_INFO "yaacrl::LogLevel::INFO"
+        Cpp_WARNING "yaacrl::LogLevel::WARNING"
+        Cpp_ERROR "yaacrl::LogLevel::ERROR"
 
 
     cdef void set_logger(void(*)(CppLogLevel, string))
