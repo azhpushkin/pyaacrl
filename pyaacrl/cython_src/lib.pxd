@@ -22,3 +22,17 @@ cdef extern from "yaacrl/yaacrl.h" namespace "yaacrl":
 
         void store_fingerprint(CppFingerprint f)
         map[string, float] get_matches(CppFingerprint f)
+
+
+cdef extern from "yaacrl/config.h" namespace "yaacrl":
+    # wrapping `enum class`
+    cdef cppclass CppLogLevel "yaacrl::LogLevel":
+        pass
+
+    cdef CppLogLevel Cpp_DEBUG
+    cdef CppLogLevel Cpp_INFO
+    cdef CppLogLevel Cpp_WARNING
+    cdef CppLogLevel Cpp_ERROR
+
+
+    cdef void set_logger(void(*)(CppLogLevel, string))

@@ -1,4 +1,5 @@
 # cython: c_string_type=unicode, c_string_encoding=utf8
+# distutils: language = c++
 
 from cython.operator cimport dereference as deref
 from libcpp.string cimport string
@@ -39,10 +40,14 @@ cdef class Fingerprint:
         deref(self.thisptr).name = new_name
             
 
+cdef void asd(CppLogLevel msg, string qwe):
+    print("Level: ", <int>msg, "msg: ", qwe)
+
 cdef class Storage:
     cdef unique_ptr[CppStorage] thisptr
 
     def __cinit__(self, dbfile: str):
+        set_logger(asd)
         self.thisptr.reset(new CppStorage(dbfile))
 
     def store_fingerprint(self, fp: Fingerprint):
