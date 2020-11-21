@@ -11,11 +11,10 @@ songs_to_upload = []
 songs_to_test = []
 
 
-l = logging.getLogger('pyaacrl')
-l.setLevel(logging.DEBUG)
+pyaacrl.logger.setLevel(logging.DEBUG)
 f = logging.StreamHandler(sys.stdout)
 f.setFormatter(logging.Formatter('[%(levelname)s] %(message)s'))
-l.addHandler(f)
+pyaacrl.logger.addHandler(f)
 
 for s in os.listdir(songs_dir):
     if (not s.endswith('.wav')) or s.startswith('skip_'):
