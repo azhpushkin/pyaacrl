@@ -12,7 +12,7 @@ from lib cimport *
 # Usuall Python imports
 import logging
 
-logger = logging.getLogger()
+logger = logging.getLogger('pyaacrl')
 
 
 cdef class Fingerprint:
@@ -73,10 +73,3 @@ cdef void _custom_logger(CppLogLevel cpp_level, string log_msg):
 
 
 set_logger(_custom_logger)
-
-# TESTING
-import sys
-logger.setLevel(logging.DEBUG)
-f = logging.StreamHandler(sys.stdout)
-f.setFormatter(logging.Formatter('[%(levelname)s] %(message)s'))
-logger.addHandler(f)

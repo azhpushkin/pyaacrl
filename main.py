@@ -1,5 +1,7 @@
 import os
 import pyaacrl
+import logging
+import sys
 
 
 # TODO: other test stand is probably worth implementing
@@ -9,10 +11,11 @@ songs_to_upload = []
 songs_to_test = []
 
 
-import sys
-import logging
-
-
+l = logging.getLogger('pyaacrl')
+l.setLevel(logging.DEBUG)
+f = logging.StreamHandler(sys.stdout)
+f.setFormatter(logging.Formatter('[%(levelname)s] %(message)s'))
+l.addHandler(f)
 
 for s in os.listdir(songs_dir):
     if (not s.endswith('.wav')) or s.startswith('skip_'):
