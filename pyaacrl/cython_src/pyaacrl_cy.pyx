@@ -61,6 +61,9 @@ cdef class Storage:
         return deref(self.thisptr).get_matches(deref(fp.thisptr))
 
 cdef void _custom_logger(CppLogLevel cpp_level, string log_msg):
+    # read more about this at: http://docs.cython.org/en/latest/src/userguide/language_basics.html#error-return-values
+    # in short, as _custom_logger has void return value, there are issues with passing
+    # exception (if one happens) through the call stack
     try:
         if   cpp_level == Cpp_DEBUG:   logger.debug(log_msg)
         elif cpp_level == Cpp_INFO:    logger.info(log_msg)
