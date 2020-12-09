@@ -61,10 +61,17 @@ cdef class Storage:
         return deref(self.thisptr).get_matches(deref(fp.thisptr))
 
 cdef void _custom_logger(CppLogLevel cpp_level, string log_msg):
-    if   cpp_level == Cpp_DEBUG:   logger.debug(log_msg)
-    elif cpp_level == Cpp_INFO:    logger.info(log_msg)
-    elif cpp_level == Cpp_WARNING: logger.warning(log_msg)
-    elif cpp_level == Cpp_ERROR:   logger.error(log_msg)
+    try:
+        if   cpp_level == Cpp_DEBUG:   logger.debug(log_msg)
+        elif cpp_level == Cpp_INFO:    logger.info(log_msg)
+        elif cpp_level == Cpp_WARNING: logger.warning(log_msg)
+        elif cpp_level == Cpp_ERROR:   logger.error(log_msg)
+    except KeyboardInterrupt:
+        print('Exiting...')
+        exit(0)
+    except:
+        logger.exception("Error during logging")
+    
 
 
 set_logger(_custom_logger)
