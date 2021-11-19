@@ -7,3 +7,7 @@ clean:
 	rm *.egg-info -rf
 	rm _skbuild -rf
 	rm *.sqlite
+
+sync-yaacrl:
+	cd vendor/yaacrl && git checkout master && git pull
+	git add vendor/yaacrl
