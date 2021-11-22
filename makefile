@@ -1,6 +1,8 @@
 all:
 	python setup.py build_ext --inplace
-	python main.py
+	@echo "Commands to run test program:"
+	@echo "   python main.py fingerprint lib.sqlite /path"
+	@echo "   python main.py match lib.sqlite /path"
 
 clean:
 	rm pyaacrl/*.egg-info -rf
