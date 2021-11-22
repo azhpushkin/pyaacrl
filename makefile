@@ -11,5 +11,5 @@ clean:
 	rm *.sqlite
 
 sync-yaacrl:
-	cd vendor/yaacrl && git checkout master && git pull
+	cd vendor/yaacrl && git checkout main && git pull
 	git add vendor/yaacrl
