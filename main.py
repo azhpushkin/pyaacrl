@@ -21,6 +21,8 @@ def fingerprint(library_path, songs_dir):
             storage.store_fingerprint(pyaacrl.Fingerprint.from_mp3(full_path), s)
         else:
             print('Unknown file format:', s)
+    
+    print('Total songs in DB now:', len(storage.list_songs()))
 
 
 def match(library_path, clip_path):
