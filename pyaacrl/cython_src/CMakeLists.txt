@@ -1,5 +1,6 @@
 find_package(PythonExtensions REQUIRED)
 find_package(Cython REQUIRED)
+set(CMAKE_CXX_STANDARD 17)
 
 add_cython_target(pyaacrl_cy CXX PY3)
 

@@ -6,6 +6,7 @@ all:
 
 clean:
 	rm pyaacrl/*.egg-info -rf
+	rm build/ -rf
 	rm *.egg-info -rf
 	rm _skbuild -rf
 	rm *.sqlite
